@@ -1,8 +1,8 @@
 use proc_macro::TokenStream;
-use quote::{ToTokens, quote};
+use quote::quote;
 use syn::{parse_macro_input, DeriveInput};
 
-fn get_named_values_from_attr(f: &syn::Field) -> Vec<(&syn::Attribute, syn::Ident, syn::Lit)> {
+fn get_named_values_from_attr(f: &syn::Field) -> Vec<(syn::MetaList, syn::Ident, syn::Lit)> {
     let mut named_vaules = Vec::new();
 
     for attr in &f.attrs {
@@ -24,7 +24,7 @@ fn get_named_values_from_attr(f: &syn::Field) -> Vec<(&syn::Attribute, syn::Iden
                     let name = nv.path.segments[0].ident.clone();
                     let val = nv.lit.clone();
                     println!("attr: {:?} {:?}={:?}", attr_ident, name, val);
-                    named_vaules.push((attr, name, val));
+                    named_vaules.push((meta_list.clone(), name, val));
                 }
             }
         }
@@ -44,12 +44,17 @@ fn get_value_of_each(f: &syn::Field) -> Option<String> {
 }
 
 fn check_attribute(f: &syn::Field) -> Option<syn::Error> {
-    for (attr, name, _) in get_named_values_from_attr(f) {
+    for (meta_list, name, _) in get_named_values_from_attr(f) {
         if name != "each" {
+            /*
             let mut tokens = (&attr.path).into_token_stream();
             let tokens2 = (&attr.tokens).into_token_stream();
             tokens.extend(tokens2.into_iter());
-            return Some(syn::Error::new_spanned(&tokens, "expected `builder(each = \"...\")`"));
+            */
+            return Some(syn::Error::new_spanned(
+                &meta_list,
+                "expected `builder(each = \"...\")`",
+            ));
         }
     }
     None
