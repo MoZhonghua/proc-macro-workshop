@@ -1,5 +1,11 @@
-error[E0277]: the trait bound `bitfield::checks::False: bitfield::checks::DiscriminantInRange` is not satisfied
+error[E0277]: the trait bound `False: DiscriminantInRange` is not satisfied
   --> $DIR/09-variant-out-of-range.rs:17:5
    |
 17 |     External,
-   |     ^^^^^^^^ the trait `bitfield::checks::DiscriminantInRange` is not implemented for `bitfield::checks::False`
+   |     ^^^^^^^^ the trait `DiscriminantInRange` is not implemented for `False`
+   |
+note: required by a bound in `Check2`
+  --> $DIR/checks.rs:71:22
+   |
+71 | pub struct Check2<T: DiscriminantInRange> {
+   |                      ^^^^^^^^^^^^^^^^^^^ required by this bound in `Check2`

@@ -1,7 +1,12 @@
-error[E0277]: the trait bound `bitfield::checks::SevenMod8: bitfield::checks::TotalSizeIsMultipleOfEightBits` is not satisfied
+error[E0277]: the trait bound `SevenMod8: TotalSizeIsMultipleOfEightBits` is not satisfied
   --> $DIR/04-multiple-of-8bits.rs:53:1
    |
 53 | #[bitfield]
-   | ^^^^^^^^^^^ the trait `bitfield::checks::TotalSizeIsMultipleOfEightBits` is not implemented for `bitfield::checks::SevenMod8`
+   | ^^^^^^^^^^^ the trait `TotalSizeIsMultipleOfEightBits` is not implemented for `SevenMod8`
    |
+note: required by a bound in `Check`
+  --> $DIR/checks.rs:48:21
+   |
+48 | pub struct Check<T: TotalSizeIsMultipleOfEightBits> {
+   |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ required by this bound in `Check`
    = note: this error originates in the attribute macro `bitfield` (in Nightly builds, run with -Z macro-backtrace for more info)
